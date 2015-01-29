@@ -1,0 +1,58 @@
+﻿@model IEnumerable<ITMApp.Models.Status>
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="col-sm-3 col-md-2 sidebar">
+    <ul class="nav nav-sidebar">
+        <li class="active"><a href="#">ABC Retrospective</a></li> @*TODO html action link*@
+        <li><a href="#">Manager Performance</a></li>
+        <li><a href="#">Commodity Presence</a></li>
+        <li><a href="#">Marketing events</a></li>
+    </ul>
+</div>
+
+<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+    <h1 class="page-header">Selections</h1>
+    <div class="row placeholders">
+        <div class="col-xs-6 col-sm-3 placeholder">
+            @using (Html.BeginForm())
+            {
+                @Html.DropDownList("Name", ViewBag.Switches as SelectList, new { @class = "chzn-select", style = "width:250px;", data_placeholder = "Select a switch" })
+                <br />
+                <input type="submit" value="FILTER" class="btn btn-info" style="margin-top: 10px; float: left; " />
+            }
+        </div>
+        <div class="col-xs-6 col-sm-3 placeholder"></div>
+        <div class="col-xs-6 col-sm-3 placeholder"></div>
+        <div class="col-xs-6 col-sm-3 placeholder"></div>
+    </div>
+
+    <h2 class="sub-header">Lol!</h2>
+    <div class="table-responsive" style="overflow-y: scroll; height: 400px">
+        <table class="table table-bordered table-condensed header-fixed">
+            <thead>
+                <tr>
+                    <th>id Commutator</th>
+                    <th>date</th>
+                    <th>action</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (ITMApp.Models.Status stat in Model)
+                {
+                    <tr>
+                        <td>@stat.switchID</td>
+                        <td>@stat.datetime</td>
+                        <td>@(stat.action == "+1" ? "Up" : "Down")</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+    <div class="panel-footer">
+        @Html.ActionLink("Add new status", "Create", null,
+                     new { @class = "btn btn-primary" })
+    </div>
+</div>
