@@ -1,4 +1,4 @@
-﻿@model ITMApp.Models.Status
+﻿@model ITMApp.Models.status
 @{
     ViewBag.Title = "Create";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -10,22 +10,27 @@
     {
 
         <div class="panel-body">
-            @*@Html.HiddenFor(m => m.statusID)*@
+            @Html.HiddenFor(m => m.statusID)
             @foreach (var property in ViewData.ModelMetadata.Properties)
             {
-                switch (property.PropertyName)
+                switch (property.PropertyName)     
                 {
+                    case "statusID":
+                    case "_switch":
+                        // do nothing
+                        break;
+                        
                     case "switchID":
                         <div class="form-group">
                             <label>Commutator</label>
-                            @Html.DropDownList("Name", ViewBag.Commutators as SelectList, new { @class = "chzn-select", data_placeholder = "Select a commutator" })
+                            @Html.DropDownList("switchID", ViewBag.Switches as SelectList, new { @class = "chzn-select", data_placeholder = "Select a commutator" })
                         </div>
                         break;
 
                     case "action":
                         <div class="form-group">
                             <label>Select Action</label>
-                            @Html.DropDownList("Actions", ViewBag.Actions as SelectList, new { data_placeholder = "Select an action" })
+                            @Html.DropDownList("action", ViewBag.PossibleActions as SelectList, new { data_placeholder = "Select an action" })
                         </div>
                         break;
 

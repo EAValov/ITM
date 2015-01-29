@@ -1,4 +1,4 @@
-﻿@model IEnumerable<ITMApp.Models.Status>
+﻿@model IEnumerable<ITMApp.Models.status>
 @{
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -40,7 +40,7 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach (ITMApp.Models.Status stat in Model)
+                @foreach (ITMApp.Models.status stat in Model)
                 {
                     <tr>
                         <td>@stat.switchID</td>
