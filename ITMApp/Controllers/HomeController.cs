@@ -72,6 +72,7 @@ namespace ITMApp.Controllers
         {
             ViewBag.Switches = new SelectList(repository.switches, "Name", "Name", Name); //in constructor
 
+
             var _switch = (from r in repository.switches where r.Name == Name select r).FirstOrDefault();
 
             IEnumerable<status> st = (Name == null ? repository.switches.SelectMany(p => p.status) : _switch.status);
@@ -101,19 +102,27 @@ namespace ITMApp.Controllers
             //find out closest date
             var lastStatus = (from q in sw.status
                               let distance = q.datetime.Subtract(NewStatus.datetime).Ticks
-                              orderby distance ascending
+                              orderby distance descending
                               select q).First();
 
-            if (NewStatus.action != lastStatus.action)
+            if (NewStatus.action != lastStatus.action && NewStatus.datetime > lastStatus.datetime)
             {
                 NewStatus._switch = sw;
                 repository.SaveStatus(NewStatus);
-                //tempdata message
+
+                TempData["SuccessMessage"] = string.Format("Успешно сохранено {0} для {1} в {2}",
+                    (NewStatus.action == "-1" ? "Down": "Up"),
+                    NewStatus._switch.Name,
+                    NewStatus.datetime);
+
                 return RedirectToAction("Index");
             }
             else
             {
-                //tempdata ololo
+                TempData["ErrorMessage"] = string.Format("Некорректный ввод - {0} последний раз был {1} в {2}",
+                    lastStatus._switch.Name,
+                    (lastStatus.action == "-1" ? "Down" : "Up"),
+                    lastStatus.datetime);
                 return RedirectToAction("Create");
             }
 

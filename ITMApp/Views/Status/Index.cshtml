@@ -1,0 +1,99 @@
+﻿@model ITMApp.Models.StatusControllerViewModel
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section Styles{
+    <link href="~/Content/themes/ui-lightness/jquery-ui.css" rel="stylesheet" />
+    <link href="~/Content/jquery-ui-timepicker-addon.min.css" rel="stylesheet" />
+    <link href="~/Content/Dashbord.css" rel="stylesheet" />
+}
+@section Scripts {
+    <script src="~/Scripts/jquery-ui-1.11.2.min.js"></script>
+    <script src="~/Scripts/jquery-ui-timepicker-addon.min.js"></script>
+    <script src="~/Scripts/jquery-ui-sliderAccess.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('.chzn-select').chosen({ no_results_text: 'No match found' });
+            var $datetimepicker = $(".datefield");
+            $datetimepicker.datetimepicker({ timeFormat: "hh:mm:ss", dateFormat: 'dd.mm.yy', });
+            $datetimepicker.datetimepicker('setDate', new Date());
+        });
+    </script>
+}
+<div class="col-sm-3 col-md-2 sidebar">
+    <ul class="nav nav-sidebar">
+        <li>@Html.ActionLink("Все коммутаторы", "Index", "Home")</li> @*TODO html action link*@
+        <li class="active">@Html.ActionLink("Отчет по состоянию", "Index", "status")</li>
+        <li><a href="#">Commodity Presence</a></li>
+        <li><a href="#">Marketing events</a></li>
+    </ul>
+</div>
+<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success">@TempData["SuccessMessage"]</div>
+    }
+    
+    <h1 class="page-header">Выберите время</h1>
+    <div class="row placeholders">
+        <div class="col-xs-6 col-sm-3 placeholder">
+            @using (Html.BeginForm())
+            {
+                @Html.TextBox("date", null, new { style = "width:250px", @class = "datefield", type = "datetime" })
+                <br />
+                <input type="submit" value="Выбрать" class="btn btn-info" style="margin-top: 10px; float: left; " />
+            }
+        </div>
+        <div class="col-xs-6 col-sm-3 placeholder"></div>
+        <div class="col-xs-6 col-sm-3 placeholder"></div>
+        <div class="col-xs-6 col-sm-3 placeholder"></div>
+    </div>
+
+
+
+    <div class="row">
+        <div class="col-xs-6">
+            <h2 class="sub-header">Коммутаторы Up</h2>
+            <div class="table-responsive" style="overflow-y: scroll; height: 400px">
+                <table class="table table-bordered table-condensed">
+                    <thead>
+                        <tr>
+                            <th>Имя Коммутатора</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (ITMApp.Models._switch sw in Model.UpSwitches)
+                        {
+                            <tr>
+                                <td>@sw.Name</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="col-xs-6">
+            <h2 class="sub-header">Коммутаторы Down</h2>
+            <div class="table-responsive" style="overflow-y: scroll; height: 400px">
+                <table class="table table-bordered table-condensed">
+                    <thead>
+                        <tr>
+                            <th>Имя Коммутатора</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (ITMApp.Models._switch sw in Model.DownSwitches)
+                        {
+                            <tr>
+                                <td>@sw.Name</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,45 +1,64 @@
 ﻿@model ITMApp.Models.status
 @{
-    ViewBag.Title = "Create";
+    ViewBag.Title = "Добавить статус";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<div class="panel">
-    @using (Html.BeginForm("Create", "Home",
-        FormMethod.Post, new { enctype = "multipart/form-data" }))
-    {
+@section Styles{
 
+    <link href="~/Content/themes/ui-lightness/jquery-ui.css" rel="stylesheet" />
+    <link href="~/Content/jquery-ui-timepicker-addon.min.css" rel="stylesheet" />
+}
+@section Scripts {
+    <script src="~/Scripts/jquery-ui-1.11.2.min.js"></script>
+    <script src="~/Scripts/jquery-ui-timepicker-addon.min.js"></script>
+    <script src="~/Scripts/jquery-ui-sliderAccess.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('.chzn-select').chosen({ no_results_text: 'No match found' });
+            var $datetimepicker = $(".datefield");
+            $datetimepicker.datetimepicker({ timeFormat: "hh:mm:ss", dateFormat: 'dd.mm.yy', });
+            $datetimepicker.datetimepicker('setDate', new Date());
+        });
+    </script>
+}
+
+
+<div class="panel" style="margin-top: 50px;">
+    @using (Html.BeginForm("Create", "Home",
+        FormMethod.Post))
+    {
         <div class="panel-body">
             @Html.HiddenFor(m => m.statusID)
             @foreach (var property in ViewData.ModelMetadata.Properties)
             {
-                switch (property.PropertyName)     
+                switch (property.PropertyName)
                 {
                     case "statusID":
                     case "_switch":
                         // do nothing
                         break;
-                        
+
                     case "switchID":
                         <div class="form-group">
-                            <label>Commutator</label>
+                            <label>Выберите коммутатор</label>
+                            <br/>
                             @Html.DropDownList("switchID", ViewBag.Switches as SelectList, new { @class = "chzn-select", data_placeholder = "Select a commutator" })
                         </div>
                         break;
 
-                    case "action":
-                        <div class="form-group">
-                            <label>Select Action</label>
-                            @Html.DropDownList("action", ViewBag.PossibleActions as SelectList, new { data_placeholder = "Select an action" })
-                        </div>
+                    case "datetime":
+                    <div class="form-group">
+                        <label>Выберите дату и время</label>
+                        @Html.TextBox("datetime", null, new { @class = "datefield", type = "datetime" })
+
+                    </div>
                         break;
 
-                    default:
+                    case "action":
                     <div class="form-group">
-                        <label>@(property.DisplayName ?? property.PropertyName)</label>
-                        @Html.TextBox(property.PropertyName, null,
-                                new { @class = "form-control" })
-                        @Html.ValidationMessage(property.PropertyName)
+                        <label>Выберите действие</label>
+                        @Html.DropDownList("action", ViewBag.PossibleActions as SelectList, new { data_placeholder = "Select an action" })
                     </div>
                         break;
                 }
