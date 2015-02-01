@@ -1,6 +1,6 @@
 ﻿@model IEnumerable<ITMApp.Models.status>
 @{
-    ViewBag.Title = "Статусы";
+    ViewBag.Title = "Все статусы";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
@@ -18,10 +18,10 @@
 
 <div class="col-sm-3 col-md-2 sidebar">
     <ul class="nav nav-sidebar">
-        <li class="active">@Html.ActionLink("Все коммутаторы", "Index", "Home")</li> @*TODO html action link*@
+        <li class="active">@Html.ActionLink("Все коммутаторы", "Index", "Home")</li> 
         <li>@Html.ActionLink("Отчет по состоянию", "Index", "Status")</li>
         <li>@Html.ActionLink("Отчет по простою", "Index", "Downtime")</li>
-        <li><a href="#">Marketing events</a></li>
+        <li>@Html.ActionLink("Flickering коммутаторы", "Index", "Flickering")</li>
     </ul>
 </div>
 
@@ -33,10 +33,10 @@
     
     <h1 class="page-header">Выберите Коммутатор</h1>
     <div class="row placeholders">
-        <div class="col-xs-6 col-sm-3 placeholder">
+        <div class="col-xs-6 col-sm-3 placeholder" style="width: 23%;">
             @using (Html.BeginForm())
             {
-                @Html.DropDownList("Name", ViewBag.Switches as SelectList, new { @class = "chzn-select", style = "width:250px;", data_placeholder = "Select a switch" })
+                @Html.DropDownList("Name", ViewBag.Switches as SelectList, new { @class = "chzn-select", style = "width:250px; float: left;", data_placeholder = "Select a switch" })
                 <br />
                 <input type="submit" value="Выбрать" class="btn btn-info" style="margin-top: 10px; float: left; " />
             }

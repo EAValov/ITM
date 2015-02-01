@@ -1,5 +1,6 @@
-﻿@{
-    ViewBag.Title = "Index";
+﻿@model System.String
+@{
+    ViewBag.Title = "Время простоя";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
@@ -8,6 +9,13 @@
     <link href="~/Content/themes/ui-lightness/jquery-ui.css" rel="stylesheet" />
     <link href="~/Content/jquery-ui-timepicker-addon.min.css" rel="stylesheet" />
     <link href="~/Content/Dashbord.css" rel="stylesheet" />
+
+    <style type="text/css">
+        .chosen-container {
+            float: none;
+        }
+        label {  float: left; }
+    </style>
 }
 @section Scripts {
     <script src="~/Scripts/jquery-ui-1.11.2.min.js"></script>
@@ -17,7 +25,7 @@
         $(document).ready(function () {
             $('.chzn-select').chosen({ no_results_text: 'No match found' });
             var $datetimepicker = $(".datefield");
-            $datetimepicker.datetimepicker({ timeFormat: "hh:mm:ss", dateFormat: 'dd.mm.yy', });
+            $datetimepicker.datetimepicker({ timeFormat: "HH:mm:ss", dateFormat: 'dd.mm.yy', });
             $datetimepicker.datetimepicker('setDate', new Date());
         });
     </script>
@@ -25,10 +33,10 @@
 
 <div class="col-sm-3 col-md-2 sidebar">
     <ul class="nav nav-sidebar">
-        <li class="active">@Html.ActionLink("Все коммутаторы", "Index", "Home")</li> @*TODO html action link*@
-        <li>@Html.ActionLink("Отчет по состоянию", "Index", "status")</li>
-        <li><a href="#">Commodity Presence</a></li>
-        <li><a href="#">Marketing events</a></li>
+        <li>@Html.ActionLink("Все коммутаторы", "Index", "Home")</li>
+        <li>@Html.ActionLink("Отчет по состоянию", "Index", "Status")</li>
+        <li class="active">@Html.ActionLink("Отчет по простою", "Index", "Downtime")</li>
+        <li>@Html.ActionLink("Flickering коммутаторы", "Index", "Flickering")</li>
     </ul>
 </div>
 
@@ -38,21 +46,31 @@
         <div class="alert alert-success">@TempData["SuccessMessage"]</div>
     }
 
-    <h1 class="page-header">Выберите Коммутатор</h1>
+    <h1 class="page-header">Выберите Коммутатор и временной интервал</h1>
     <div class="row placeholders">
         <div class="col-xs-6 col-sm-3 placeholder">
             @using (Html.BeginForm())
             {
-                @Html.DropDownList("Name", ViewBag.Switches as SelectList, new { @class = "chzn-select", style = "width:250px;", data_placeholder = "Select a switch" })
-                <br />
-                @Html.TextBox("dateFirst", null, new { @class = "datefield", type = "datetime" })
-                <br />
-                @Html.TextBox("dateLast", null, new { @class = "datefield", type = "datetime" })
-                
-                <input type="submit" value="Выбрать" class="btn btn-info" style="margin-top: 10px; float: left; " />
+                <div class="form-group">
+                    <label>Коммутатор</label>
+                    @Html.DropDownList("switchID", ViewBag.Switches as SelectList, new { @class = "chzn-select", style = "width:250px", data_placeholder = "Select a switch" })
+                </div>
+                <div class="form-group">
+                    <label>Дата с</label>
+                    @Html.TextBox("dateFirst", null, new { @class = "datefield", style = "width:250px", type = "datetime" })
+                </div>
+                <div class="form-group">
+                    <label>Дата по</label>
+                    @Html.TextBox("dateLast", null, new { @class = "datefield", style = "width:250px", type = "datetime" })
+                </div>
+                <input type="submit" value="Выбрать" class="btn btn-info" />
             }
         </div>
-        <div class="col-xs-6 col-sm-3 placeholder"></div>
+        <div class="col-xs-6 col-sm-3 placeholder">
+            <h2>Время простоя</h2>
+            <br>
+            <p>@ViewBag.ReturnString</p>
+        </div>
         <div class="col-xs-6 col-sm-3 placeholder"></div>
         <div class="col-xs-6 col-sm-3 placeholder"></div>
     </div>

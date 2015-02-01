@@ -29,6 +29,7 @@ namespace ITMApp.Controllers
                                   orderby distance descending
                                   select w.action).AsParallel().First();
 
+
                 if (lastAction == "+1")
                 {
                     upSwitches.Add(sw);

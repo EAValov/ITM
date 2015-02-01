@@ -1,0 +1,82 @@
+﻿@model List<ITMApp.Models._switch>
+@{
+    ViewBag.Title = "Коммутаторы в режиме Flickering";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section Styles{
+
+    <link href="~/Content/themes/ui-lightness/jquery-ui.css" rel="stylesheet" />
+    <link href="~/Content/jquery-ui-timepicker-addon.min.css" rel="stylesheet" />
+    <link href="~/Content/Dashbord.css" rel="stylesheet" />
+}
+@section Scripts {
+    <script src="~/Scripts/jquery-ui-1.11.2.min.js"></script>
+    <script src="~/Scripts/jquery-ui-timepicker-addon.min.js"></script>
+    <script src="~/Scripts/jquery-ui-sliderAccess.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            var $datetimepicker = $(".datefield");
+            $datetimepicker.datetimepicker({ timeFormat: "HH:mm:ss", dateFormat: 'dd.mm.yy', });
+            $datetimepicker.datetimepicker('setDate', new Date());
+        });
+    </script>
+}
+
+<div class="col-sm-3 col-md-2 sidebar">
+    <ul class="nav nav-sidebar">
+        <li>@Html.ActionLink("Все коммутаторы", "Index", "Home")</li>
+        <li>@Html.ActionLink("Отчет по состоянию", "Index", "Status")</li>
+        <li>@Html.ActionLink("Отчет по простою", "Index", "Downtime")</li>
+        <li class="active">@Html.ActionLink("Flickering коммутаторы", "Index", "Flickering")</li>
+    </ul>
+</div>
+
+<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success">@TempData["SuccessMessage"]</div>
+    }
+
+    <h1 class="page-header">Выберите период времени</h1>
+    <div class="row placeholders">
+        <div class="col-xs-6 col-sm-3 placeholder">
+            @using (Html.BeginForm())
+            {
+                <div class="form-group">
+                    <label>Дата с.</label>
+                    @Html.TextBox("dateFirst", null, new { @class = "datefield", style = "width:250px", type = "datetime" })
+                </div>
+                <div class="form-group">
+                    <label>Дата по</label>
+                    @Html.TextBox("dateLast", null, new { @class = "datefield", style = "width:250px", type = "datetime" })
+                </div>
+                <div class="form-group">
+                    <input type="submit" value="Выбрать" class="btn btn-info" style="margin-top: 10px; float: left; " />
+                </div>
+            }
+        </div>
+        <div class="col-xs-6 col-sm-3 placeholder"></div>
+        <div class="col-xs-6 col-sm-3 placeholder"></div>
+        <div class="col-xs-6 col-sm-3 placeholder"></div>
+    </div>
+
+    <h2 class="sub-header">Коммутаторы в статусе Flickering</h2>
+    <div class="table-responsive" style="overflow-y: scroll; height: 400px">
+        <table class="table table-bordered table-condensed">
+            <thead>
+                <tr>
+                    <th>Имя Коммутатора</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (ITMApp.Models._switch sw in Model)
+                {
+                    <tr>
+                        <td>@sw.Name</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

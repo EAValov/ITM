@@ -1,6 +1,6 @@
 ﻿@model ITMApp.Models.StatusControllerViewModel
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Состояние";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
@@ -17,17 +17,17 @@
         $(document).ready(function () {
             $('.chzn-select').chosen({ no_results_text: 'No match found' });
             var $datetimepicker = $(".datefield");
-            $datetimepicker.datetimepicker({ timeFormat: "hh:mm:ss", dateFormat: 'dd.mm.yy', });
+            $datetimepicker.datetimepicker({ timeFormat: "HH:mm:ss", dateFormat: 'dd.mm.yy', });
             $datetimepicker.datetimepicker('setDate', new Date());
         });
     </script>
 }
 <div class="col-sm-3 col-md-2 sidebar">
     <ul class="nav nav-sidebar">
-        <li>@Html.ActionLink("Все коммутаторы", "Index", "Home")</li> @*TODO html action link*@
-        <li class="active">@Html.ActionLink("Отчет по состоянию", "Index", "status")</li>
-        <li><a href="#">Commodity Presence</a></li>
-        <li><a href="#">Marketing events</a></li>
+        <li>@Html.ActionLink("Все коммутаторы", "Index", "Home")</li>
+        <li class="active">@Html.ActionLink("Отчет по состоянию", "Index", "Status")</li>
+        <li>@Html.ActionLink("Отчет по простою", "Index", "Downtime")</li>
+        <li>@Html.ActionLink("Flickering коммутаторы", "Index", "Flickering")</li>
     </ul>
 </div>
 <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
@@ -39,10 +39,10 @@
     
     <h1 class="page-header">Выберите время</h1>
     <div class="row placeholders">
-        <div class="col-xs-6 col-sm-3 placeholder">
+        <div class="col-xs-6 col-sm-3 placeholder" style="width: 23%;">
             @using (Html.BeginForm())
             {
-                @Html.TextBox("date", null, new { style = "width:250px", @class = "datefield", type = "datetime" })
+                @Html.TextBox("date", null, new { style = "width:250px; float: left;", @class = "datefield", type = "datetime" })
                 <br />
                 <input type="submit" value="Выбрать" class="btn btn-info" style="margin-top: 10px; float: left; " />
             }

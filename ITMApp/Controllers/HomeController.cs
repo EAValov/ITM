@@ -11,67 +11,11 @@ namespace ITMApp.Controllers
 {
     public class HomeController : Controller
     {
-        //IEnumerable<_switch> Switches = new List<_switch>()
-        //{
-        //    new _switch() 
-        //    { 
-        //        Name = "Commutator 1",
-        //        switchID = 1,
-        //        status = new Collection<status>() 
-        //        {
-        //            new status() { switchID = 1, datetime = DateTime.Now, action = "+1"},
-        //            new status() { switchID = 1, datetime = DateTime.Now.AddSeconds(10), action = "-1"},
-        //            new status() { switchID = 1, datetime = DateTime.Now.AddSeconds(20), action = "+1"},
-        //            new status() { switchID = 1, datetime = DateTime.Now.AddSeconds(30), action = "-1"},
-        //            new status() { switchID = 1, datetime = DateTime.Now.AddSeconds(40), action = "+1"},
-        //        }  
-        //    },
-        //    new _switch() 
-        //    { 
-        //        Name = "Comswitcher 2",
-        //        switchID = 2,
-        //        status = new Collection<status>() 
-        //        {
-        //            new status() { switchID = 2, datetime = DateTime.Now, action = "+1"},
-        //            new status() { switchID = 2, datetime = DateTime.Now.AddSeconds(20), action = "-1"},
-        //            new status() { switchID = 2, datetime = DateTime.Now.AddSeconds(50), action = "+1"},
-        //            new status() { switchID = 2, datetime = DateTime.Now.AddSeconds(100), action = "-1"},
-        //            new status() { switchID = 2, datetime = DateTime.Now.AddSeconds(150), action = "+1"},
-        //        }  
-        //    },
-        //    new _switch() 
-        //    { 
-        //        Name = "Flicker 3",
-        //        switchID = 3,
-        //        status = new Collection<status>() 
-        //        {
-        //            new status() { switchID = 3, datetime = DateTime.Now, action = "+1"},
-        //            new status() { switchID = 3, datetime = DateTime.Now.AddSeconds(1), action = "-1"},
-        //            new status() { switchID = 3, datetime = DateTime.Now.AddSeconds(2), action = "+1"},
-        //            new status() { switchID = 3, datetime = DateTime.Now.AddSeconds(3), action = "-1"},
-        //            new status() { switchID = 3, datetime = DateTime.Now.AddSeconds(4), action = "+1"},
-        //            new status() { switchID = 3, datetime = DateTime.Now.AddSeconds(5), action = "-1"},
-        //            new status() { switchID = 3, datetime = DateTime.Now.AddSeconds(6), action = "+1"},
-        //            new status() { switchID = 3, datetime = DateTime.Now.AddSeconds(7), action = "-1"},
-        //            new status() { switchID = 3, datetime = DateTime.Now.AddSeconds(8), action = "+1"},
-        //            new status() { switchID = 3, datetime = DateTime.Now.AddSeconds(9), action = "-1"},
-
-        //        }  
-        //    }
-        //};
-
         private IDBRepository repository = new EFDBRepository();
-
-        //public HomeController(IDBRepository repo) 
-        //{ 
-        //    this.repository = repo;
-        //    ViewBag.Switches = new SelectList(repository.switches.Select(r => r.Name)); //in constructor
-        //}
 
         public ViewResult Index(string Name)
         {
             ViewBag.Switches = new SelectList(repository.switches, "Name", "Name", Name); //in constructor
-
 
             var _switch = (from r in repository.switches where r.Name == Name select r).FirstOrDefault();
 
@@ -83,6 +27,7 @@ namespace ITMApp.Controllers
 
         public ViewResult Create()
         {
+            //Viewbag collections of select options
             ViewBag.Switches = new SelectList(repository.switches, "switchID", "Name"); //in constructor
             ViewBag.PossibleActions = new SelectList(
                 new[]
@@ -104,7 +49,7 @@ namespace ITMApp.Controllers
                               let distance = q.datetime.Subtract(NewStatus.datetime).Ticks
                               orderby distance descending
                               select q).First();
-
+            
             if (NewStatus.action != lastStatus.action && NewStatus.datetime > lastStatus.datetime)
             {
                 NewStatus._switch = sw;
