@@ -40,6 +40,7 @@ namespace ITMApp.Controllers
                 }
             }
 
+            TempData["SuccessMessage"] = string.Format("Cостояние коммутаторов на {0}", date);
             //more complex view model to display up and down commutators in the same page
             return View(new StatusControllerViewModel() { DownSwitches = downSwitches, UpSwitches = upSwitches });
         }

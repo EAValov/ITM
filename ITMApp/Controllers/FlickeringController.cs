@@ -12,7 +12,7 @@ namespace ITMApp.Controllers
     {
         private IDBRepository repository = new EFDBRepository();
 
-        public ViewResult Index(DateTime? dateFirst, DateTime? dateLast)
+        public ActionResult Index(DateTime? dateFirst, DateTime? dateLast)
         {
             List<_switch> Flickers = new List<_switch>();
 
@@ -34,6 +34,7 @@ namespace ITMApp.Controllers
                         var Statuses = FilteredStatuses.Select(j => j.datetime).Skip(i).Take(10);
                         var StatusesTimeSpan = TimeSpan.FromTicks(Statuses.Max().Subtract(Statuses.Min()).Ticks);
 
+                        //if sum of timespans less than 10s and it's more than 10
                         if (StatusesTimeSpan.Ticks < TimeSpan.FromSeconds(10).Ticks && Statuses.Count() >= 10)
                         {
                             Flickers.Add(sw);
@@ -41,6 +42,8 @@ namespace ITMApp.Controllers
                     }
                 }
             }
+
+            if (!Flickers.Any()) { TempData["ErrorMessage"] = "No flickering commutators found"; }
 
             return View(Flickers);
         }
