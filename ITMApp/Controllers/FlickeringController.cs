@@ -10,7 +10,11 @@ namespace ITMApp.Controllers
 {
     public class FlickeringController : Controller
     {
-        private IDBRepository repository = new EFDBRepository();
+       private IDBRepository repository;
+       public FlickeringController(IDBRepository repo)
+        {
+            this.repository = repo;
+        }
 
         public ActionResult Index(DateTime? dateFirst, DateTime? dateLast)
         {

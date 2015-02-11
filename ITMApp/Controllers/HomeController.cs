@@ -11,7 +11,11 @@ namespace ITMApp.Controllers
 {
     public class HomeController : Controller
     {
-        private IDBRepository repository = new EFDBRepository();
+        private IDBRepository repository;
+        public HomeController(IDBRepository repo)
+        {
+            this.repository = repo;
+        }
 
         public ViewResult Index(string Name)
         {
@@ -49,14 +53,14 @@ namespace ITMApp.Controllers
                               let distance = q.datetime.Subtract(NewStatus.datetime).Ticks
                               orderby distance descending
                               select q).First();
-            
+
             if (NewStatus.action != lastStatus.action && NewStatus.datetime > lastStatus.datetime)
             {
                 NewStatus._switch = sw;
                 repository.SaveStatus(NewStatus);
 
                 TempData["SuccessMessage"] = string.Format("Успешно сохранено {0} для {1} в {2}",
-                    (NewStatus.action == "-1" ? "Down": "Up"),
+                    (NewStatus.action == "-1" ? "Down" : "Up"),
                     NewStatus._switch.Name,
                     NewStatus.datetime);
 
@@ -71,7 +75,7 @@ namespace ITMApp.Controllers
                 return RedirectToAction("Create");
             }
 
-           
+
         }
     }
 }

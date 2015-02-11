@@ -10,7 +10,11 @@ namespace ITMApp.Controllers
 {
     public class StatusController : Controller
     {
-        private IDBRepository repository = new EFDBRepository();
+        private IDBRepository repository;
+        public StatusController(IDBRepository repo)
+        {
+            this.repository = repo;
+        }
 
         public ViewResult Index(DateTime? date)
         {
@@ -39,7 +43,6 @@ namespace ITMApp.Controllers
                     downSwitches.Add(sw);
                 }
             }
-
             TempData["SuccessMessage"] = string.Format("Cостояние коммутаторов на {0}", date);
             //more complex view model to display up and down commutators in the same page
             return View(new StatusControllerViewModel() { DownSwitches = downSwitches, UpSwitches = upSwitches });

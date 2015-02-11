@@ -23,54 +23,36 @@
     </script>
 }
 
+    <div class="panel" style="margin-top: 5%;">
+    <div class="panel-heading">
+        <h3>Добавить новый статус</h3>
+    </div>
 
-<div class="panel" style="margin-top: 50px;">
+
     @using (Html.BeginForm("Create", "Home",
         FormMethod.Post))
     {
         <div class="panel-body">
-            @Html.HiddenFor(m => m.statusID)
-            @foreach (var property in ViewData.ModelMetadata.Properties)
-            {
-                switch (property.PropertyName)
-                {
-                    case "statusID":
-                    case "_switch":
-                        // do nothing
-                        break;
+            <div class="form-group">
+                <label class="control-label">Выберите коммутатор</label>
+                @Html.DropDownList("switchID", ViewBag.Switches as SelectList, new { @class = "chzn-select form-control", data_placeholder = "Select a commutator" })
+            </div>
+            <div class="form-group">
+                <label class="control-label">Выберите дату и время</label>
+                @Html.TextBox("datetime", null, new { @class = "datefield form-control", type = "datetime" })
+            </div>
+            <div class="form-group">
+                <label class="control-label">Выберите действие</label>
+                @Html.DropDownList("action", ViewBag.PossibleActions as SelectList, new { @class = " form-control", data_placeholder = "Select an action" })
+            </div>
 
-                    case "switchID":
-                        <div class="form-group">
-                            <label>Выберите коммутатор</label>
-                            <br/>
-                            @Html.DropDownList("switchID", ViewBag.Switches as SelectList, new { @class = "chzn-select", data_placeholder = "Select a commutator" })
-                        </div>
-                        break;
-
-                    case "datetime":
-                    <div class="form-group">
-                        <label>Выберите дату и время</label>
-                        @Html.TextBox("datetime", null, new { @class = "datefield", type = "datetime" })
-
-                    </div>
-                        break;
-
-                    case "action":
-                    <div class="form-group">
-                        <label>Выберите действие</label>
-                        @Html.DropDownList("action", ViewBag.PossibleActions as SelectList, new { data_placeholder = "Select an action" })
-                    </div>
-                        break;
-                }
-            }
         </div>
-
         <div class="panel-footer">
             <input type="submit" value="Сохранить" class="btn btn-primary" />
-            @Html.ActionLink("Отмена", "Index", null, new
-       {
-           @class = "btn btn-default"
-       })
+            @Html.ActionLink("Отмена", "Index", null, new { @class = "btn btn-default" })
         </div>
     }
 </div>
+
+
+

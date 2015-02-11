@@ -9,7 +9,13 @@ namespace ITMApp.Controllers
 {
     public class DowntimeController : Controller
     {
-        private IDBRepository repository = new EFDBRepository();
+        private IDBRepository repository;
+
+        public DowntimeController(IDBRepository repo)
+        {
+            this.repository = repo;
+        }
+
 
         public ActionResult Index(DateTime? dateFirst, DateTime? dateLast, int switchID = 1)
         {
